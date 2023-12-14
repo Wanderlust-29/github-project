@@ -1,5 +1,4 @@
 function Displayrepos(data) {
-  // console.log(data);
   const profil = document.querySelector(".profil");
   const ul = document.createElement("ul");
 
@@ -11,16 +10,21 @@ function Displayrepos(data) {
   profil.appendChild(ul);
 }
 
-function callApiRepos() {
+async function callApiRepos() {
   const nameUser = document.getElementById("search").value;
-  console.log(nameUser);
   const apiUrlRepos = `https://api.github.com/users/${nameUser}/repos`;
-  console.log(apiUrlRepos);
-  fetch(apiUrlRepos).then(function (response) {
-    if (response.ok) {
-      response.json().then(Displayrepos);
+  try {
+    const response = await fetch(apiUrlRepos);
+
+    if (!response.ok) {
+      throw new Error("Unable to fetch repositories.");
     }
-  });
+
+    const data = await response.json();
+    Displayrepos(data);
+  } catch (error) {
+    console.error("Error fetching repositories:", error.message);
+  }
 }
 
 function suppDisplay() {
@@ -93,6 +97,23 @@ function displayData(data) {
   profil.appendChild(buttonSee);
 }
 
+function callApi(event) {
+  event.preventDefault();
+
+  const nameUser = document.getElementById("search").value;
+  const apiUrl = `https://api.github.com/users/${nameUser}`;
+  const displayNone = document.querySelector(".defaultError");
+
+  fetch(apiUrl).then(function (response) {
+    if (response.ok) {
+      response.json().then(displayData);
+      displayNone.classList.add("none");
+    } else {
+      displayNone.classList.remove("none");
+    }
+  });
+}
+
 function formSearch() {
   // container
   let body = document.querySelector("body");
@@ -124,23 +145,6 @@ function formSearch() {
   form.appendChild(input);
   form.appendChild(displayNone);
   form.appendChild(btnSearch).addEventListener("click", callApi);
-}
-
-function callApi(event) {
-  event.preventDefault();
-
-  const nameUser = document.getElementById("search").value;
-  const apiUrl = `https://api.github.com/users/${nameUser}`;
-  const displayNone = document.querySelector(".defaultError");
-
-  fetch(apiUrl).then(function (response) {
-    if (response.ok) {
-      response.json().then(displayData);
-      displayNone.classList.add("none");
-    } else {
-      displayNone.classList.remove("none");
-    }
-  });
 }
 
 formSearch();
