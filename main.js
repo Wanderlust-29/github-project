@@ -1,11 +1,12 @@
 function Displayrepos(data) {
   // console.log(data);
   const profil = document.querySelector(".profil");
-
   const ul = document.createElement("ul");
 
   for (let i = 0; i < data.length; i++) {
-    ul.innerHTML = +`<li>${data[i].name}</li>`;
+    const li = document.createElement("li");
+    li.textContent = data[i].name;
+    ul.appendChild(li);
   }
   profil.appendChild(ul);
 }

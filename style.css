@@ -47,9 +47,13 @@ form {
 }
 
 .cross {
+  cursor: pointer;
   position: absolute;
   top: 0.8rem;
   right: 0.8rem;
+}
+.cross:hover {
+  color: #1eff00;
 }
 
 .profil:hover {
