@@ -1,32 +1,3 @@
-function Displayrepos(data) {
-  const profil = document.querySelector(".profil");
-  const ul = document.createElement("ul");
-
-  for (let i = 0; i < data.length; i++) {
-    const li = document.createElement("li");
-    li.textContent = data[i].name;
-    ul.appendChild(li);
-  }
-  profil.appendChild(ul);
-}
-
-async function callApiRepos() {
-  const nameUser = document.getElementById("search").value;
-  const apiUrlRepos = `https://api.github.com/users/${nameUser}/repos`;
-  try {
-    const response = await fetch(apiUrlRepos);
-
-    if (!response.ok) {
-      throw new Error("Unable to fetch repositories.");
-    }
-
-    const data = await response.json();
-    Displayrepos(data);
-  } catch (error) {
-    console.error("Error fetching repositories:", error.message);
-  }
-}
-
 function suppDisplay() {
   const profil = document.querySelector(".profil");
   profil.remove();
@@ -34,7 +5,7 @@ function suppDisplay() {
 
 function displayData(data) {
   const container = document.querySelector(".container");
-  console.log(data);
+
   let user = {
     profilPicData: data.avatar_url,
     pseudoData: data.login,
@@ -60,8 +31,6 @@ function displayData(data) {
   const bio = document.createElement("p");
   const dateCrea = document.createElement("p");
   const repos = document.createElement("p");
-  const btnRepos = document.createElement("div");
-  const btnReposContent = document.createElement("p");
   const buttonSee = document.createElement("a");
 
   buttonSee.setAttribute("id", "btnSee");
@@ -70,7 +39,6 @@ function displayData(data) {
 
   cross.classList.add("cross");
   profil.classList.add("profil");
-  btnRepos.classList.add("btnRepos");
 
   cross.innerText = "X";
   profilPic.src = user.profilPicData;
@@ -82,7 +50,6 @@ function displayData(data) {
   }
   dateCrea.innerText = `Utilisateur créé le : ${dateData} il y a ${differenceInDays} jours`;
   repos.innerText = `Nombre de repos : ${user.reposData}`;
-  btnReposContent.innerText = "+";
   buttonSee.innerText = "Voir";
 
   container.appendChild(profil);
@@ -92,26 +59,7 @@ function displayData(data) {
   profil.appendChild(bio);
   profil.appendChild(dateCrea);
   profil.appendChild(repos);
-  profil.appendChild(btnRepos).addEventListener("click", callApiRepos);
-  btnRepos.appendChild(btnReposContent);
   profil.appendChild(buttonSee);
-}
-
-function callApi(event) {
-  event.preventDefault();
-
-  const nameUser = document.getElementById("search").value;
-  const apiUrl = `https://api.github.com/users/${nameUser}`;
-  const displayNone = document.querySelector(".defaultError");
-
-  fetch(apiUrl).then(function (response) {
-    if (response.ok) {
-      response.json().then(displayData);
-      displayNone.classList.add("none");
-    } else {
-      displayNone.classList.remove("none");
-    }
-  });
 }
 
 function formSearch() {
@@ -145,6 +93,23 @@ function formSearch() {
   form.appendChild(input);
   form.appendChild(displayNone);
   form.appendChild(btnSearch).addEventListener("click", callApi);
+}
+
+function callApi(event) {
+  event.preventDefault();
+
+  const nameUser = document.getElementById("search").value;
+  const apiUrl = `https://api.github.com/users/${nameUser}`;
+  const displayNone = document.querySelector(".defaultError");
+
+  fetch(apiUrl).then(function (response) {
+    if (response.ok) {
+      response.json().then(displayData);
+      displayNone.classList.add("none");
+    } else {
+      displayNone.classList.remove("none");
+    }
+  });
 }
 
 formSearch();

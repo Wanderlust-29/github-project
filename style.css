@@ -47,13 +47,9 @@ form {
 }
 
 .cross {
-  cursor: pointer;
   position: absolute;
   top: 0.8rem;
   right: 0.8rem;
-}
-.cross:hover {
-  color: #1eff00;
 }
 
 .profil:hover {
@@ -87,20 +83,4 @@ img {
 .defaultError {
   color: red;
   margin: 0 0 0.5rem 0;
-}
-
-.btnRepos {
-  width: 2rem;
-  color: #0b1c2e;
-  background-color: #f1f1f1;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-.btnRepos p {
-  padding: 0;
-  margin: 0;
-  font-weight: 700;
 }
